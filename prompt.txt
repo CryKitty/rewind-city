@@ -1,0 +1,29 @@
+Rewind City — an overcast afternoon, 1996
+
+Create a dreamy, explorable American city district, inspired by Abyssal Garden.
+It is a place, not a game: no goals, quests, characters, combat or collectibles.
+Float through several blocks on a cloudy grey afternoon. Wet dark asphalt,
+soft heavy fog, washed concrete, faded brick, dull teal and mustard. Interior
+lights are already on. Fine drizzle drifts through the air; no heavy rain,
+no hard sun shadows, no golden hour.
+
+Remember a water tower, varied buildings and window grids, parapets and AC units,
+telephone poles with sagging wires, streetlights, traffic signals, chain-link
+fences and fictional billboards. REWIND VIDEO, Starlight Diner / EAT, the pink
+and cyan INSERT COIN arcade alley, Groove Merchant records, a gas station,
+and the Starlight Motel with a faded sign and empty pool. Empty swings sway
+in the schoolyard beneath a basketball hoop. A striped parking lot and blank
+drive-in screen wait for evening. Parked and slowly moving boxy 1990s cars,
+headlights on; crows in the sky and an occasional distant plane.
+
+Gentle floating controls with no gravity, building collision, district limits,
+six meaningful viewpoints, desktop pointer lock, touch drift and look, a pause
+menu and remembered detail settings. Subtle synthesized traffic, wind, siren,
+school bell, train horn, crows and dripping. Let the visitor enter from an
+overlay over an already visible city. Step outside. Nothing is asked of you.
+
+Generate everything in code. Deliver one self-contained index.html, no external
+requests, images, models, fonts or sound files. WebGL, never WebGPU. Works as a
+local desktop file and over HTTP on desktop and mobile. Aim below 200 KB, reuse
+geometry, limit distance with fog, cap pixel density and step down when slow.
+Keep readable source, a Node build, and an invitation to make it your own.

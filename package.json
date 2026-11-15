@@ -1,0 +1,11 @@
+{
+  "name": "rewind-city",
+  "version": "1.0.0",
+  "private": true,
+  "description": "An overcast afternoon, 1996. A procedural city in one HTML file.",
+  "scripts": {
+    "build": "node source/build.mjs",
+    "build:readable": "node source/build.mjs --readable"
+  },
+  "license": "MIT"
+}
