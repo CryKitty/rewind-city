@@ -19,7 +19,7 @@ if (!readable) {
     .filter((line) => !line.trimStart().startsWith("//"))
     .map((line) => line.trim())
     .join("\n");
-  css = css.replace(/\s+/g, " ");
+  css = css.replace(/\s+/g, " ").trim();
 }
 html = html.replace("/* STYLE */", css).replace("/* SCRIPT */", js);
 await writeFile(path.join(root, "index.html"), html);
