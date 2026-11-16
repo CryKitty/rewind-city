@@ -1,0 +1,1096 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1,viewport-fit=cover"
+  /><meta name="theme-color" content="#878c8c" /><link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%23324142%27/%3E%3Ctext x=%276%27 y=%2724%27 fill=%27%23ded6bd%27 font-size=%2725%27%3ER%3C/text%3E%3C/svg%3E"
+  />
+  <title>Rewind City — an overcast afternoon, 1996</title
+  ><style>
+    * { box-sizing: border-box; } html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #899191; color: #eeeadd; font-family: Georgia, serif; } button, select { font: inherit; cursor: pointer; } button { color: inherit; background: transparent; border: 1px solid #e6e4d951; padding: 12px 18px; } button:hover { background: #e5ddc522; } button:focus-visible, a:focus-visible, select:focus-visible { outline: 2px solid #e3c987; outline-offset: 4px; } [hidden] { display: none !important; } #city { width: 100%; height: 100%; display: block; touch-action: none; } #grain { position: fixed; inset: 0; pointer-events: none; opacity: 0.15; background: repeating-linear-gradient( 0deg, #0000 0px, #0000 2px, #18232620 3px ); box-shadow: inset 0 0 180px #15202277; } header { position: fixed; top: 26px; left: 32px; right: 32px; display: flex; justify-content: space-between; align-items: center; } header a { color: inherit; text-decoration: none; font: 12px monospace; letter-spacing: 3px; } header span { opacity: 0.5; margin-left: 12px; } small { font: 10px monospace; margin-left: 12px; opacity: 0.5; } #caption { position: fixed; bottom: 105px; left: 34px; pointer-events: none; text-shadow: 0 2px 15px #132020; } #caption span, .eyebrow, .edition { font: 10px monospace; letter-spacing: 3px; } #caption h2 { font-size: 32px; font-weight: normal; margin: 12px 0 8px; } #caption p { font-size: 13px; opacity: 0.7; } #views { position: fixed; bottom: 28px; left: 32px; right: 32px; display: flex; gap: 8px; flex-wrap: wrap; } #views button { font: 11px monospace; background: #26323466; backdrop-filter: blur(8px); padding: 10px 13px; } #views button.active { background: #ded6bd; color: #263232; border-color: #ded6bd; } #overlay, #menu { position: fixed; inset: 0; background: #18252665; backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; } #overlay { justify-content: flex-start; padding-left: 12vw; background: linear-gradient(90deg, #152123df, #20303355 70%, #20303322); } h1 { font-size: clamp(70px, 10vw, 140px); line-height: 0.85; font-weight: normal; letter-spacing: -6px; margin: 32px 0 24px; } h1 i { font-weight: normal; color: #d5c9a9; } .tagline { font-style: italic; font-size: 20px; color: #cccbbf; } .rule { width: 48px; height: 1px; background: #c6b88d; margin: 28px 0; } .description { line-height: 1.8; font-size: 15px; opacity: 0.75; } #enter { background: #ded6bd; color: #263232; border: 0; width: 250px; text-align: left; margin-top: 12px; } #enter span { float: right; } #loading, .hint { font: 10px/1.8 monospace; opacity: 0.6; } .edition { position: absolute; right: 36px; bottom: 34px; line-height: 1.8; letter-spacing: 1px; opacity: 0.5; } .panel { background: #263234ed; padding: 32px; width: min(500px, 95vw); max-height: 95dvh; overflow: auto; } .panel h2 { font-size: 48px; font-weight: normal; margin: 16px 0; } .panel p { opacity: 0.7; } .panel dl { font: 12px/1.8 monospace; display: grid; grid-template-columns: 1fr 1.4fr; gap: 10px; } .panel dd { margin: 0; opacity: 0.7; } .panel label { display: block; margin: 20px 0; } .panel select { margin-left: 20px; padding: 8px; background: #354447; color: inherit; } .panel button { margin-right: 8px; } #stats { position: fixed; top: 80px; right: 32px; font: 12px monospace; background: #182526bb; padding: 12px; } @media (max-width: 600px) { header { left: 18px; right: 18px; top: 18px; } #overlay { padding: 28px; } h1 { font-size: 90px; } .edition { display: none; } #caption { left: 18px; bottom: 145px; } #views { left: 18px; right: 18px; bottom: 18px; gap: 6px; } #views button { font-size: 10px; padding: 10px; } .hint { max-width: 270px; } .panel { padding: 24px; } .panel dl { font-size: 11px; } }
+  </style>
+  <body>
+    <canvas id="city" aria-label="An explorable overcast city"></canvas>
+    <div id="grain"></div>
+    <header>
+      <a href="#" id="home">REWIND CITY <span>1996</span></a
+      ><button id="menuButton">Menu <small>ESC</small></button>
+    </header>
+    <div id="caption">
+      <span>03:16 PM · CLOUDY</span>
+      <h2 id="place">Main Street</h2>
+      <p>Nothing to do. Nowhere you have to be.</p>
+    </div>
+    <nav id="views" aria-label="Viewpoints"></nav>
+    <div id="stats" hidden></div>
+    <section id="overlay">
+      <div class="intro">
+        <div class="eyebrow">A PLACE TO REMEMBER</div>
+        <h1>Rewind<br /><i>City.</i></h1>
+        <p class="tagline">an overcast afternoon, 1996</p>
+        <div class="rule"></div>
+        <p class="description">
+          The pavement is still wet.<br />The video store lights are on.<br />You
+          have the whole afternoon.
+        </p>
+        <p id="loading">Building a little memory…</p>
+        <button id="enter" disabled>Step outside <span>↗</span></button>
+        <p class="hint">
+          WASD to drift · mouse to look · no destination required
+        </p>
+      </div>
+      <div class="edition">
+        A SMALL, FORGOTTEN CORNER OF SOMEWHERE<br />PROCEDURALLY REMEMBERED /
+        VOL. 01
+      </div>
+    </section>
+    <section id="menu" hidden>
+      <div class="panel">
+        <div class="eyebrow">TAKE YOUR TIME</div>
+        <h2>Still here.</h2>
+        <p>Float through an afternoon with nowhere to go.</p>
+        <dl>
+          <dt>W A S D / mouse</dt>
+          <dd>Drift / look</dd>
+          <dt>E / Q · Shift</dt>
+          <dd>Rise / descend · faster</dd>
+          <dt>1–6 · Esc</dt>
+          <dd>Viewpoints · menu</dd>
+          <dt>M · H</dt>
+          <dd>Sound · performance</dd>
+          <dt>Touch</dt>
+          <dd>Drag to look; hold to drift; two fingers faster</dd>
+        </dl>
+        <label
+          >Detail
+          <select id="detail">
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+          </select></label
+        ><button id="sound">Sound on</button
+        ><button id="resume">Resume ↗</button>
+        <p class="hint">Headphones, perhaps. Stay a while.</p>
+      </div>
+    </section>
+    <script>
+      "use strict";
+const canvas = document.querySelector("#city");
+const gl =
+canvas.getContext("webgl2", { antialias: false, alpha: false }) ||
+canvas.getContext("webgl", { antialias: false, alpha: false });
+if (!gl) {
+document.querySelector("#loading").textContent =
+"This memory needs WebGL. Please enable hardware acceleration or try another browser.";
+throw new Error("WebGL unavailable");
+}
+const vertex = `attribute vec3 position;attribute vec3 color;attribute vec2 uv;uniform mat4 camera;uniform mediump vec3 eye;varying vec3 tint;varying vec2 tex;varying float distanceToEye;varying vec3 world;void main(){world=position;tint=color;tex=uv;distanceToEye=distance(position,eye);gl_Position=camera*vec4(position,1.);}`;
+const fragment = `precision mediump float;varying vec3 tint;varying vec2 tex;varying float distanceToEye;varying vec3 world;uniform sampler2D atlas;uniform float fog;uniform mediump vec3 eye;void main(){vec3 c=tint;if(tex.x<0.&&tint.r>.32&&tint.r<.53&&world.y>.4&&world.y<40.){float brick=step(.955,fract(world.y*2.7));float joints=step(.97,fract((world.x+world.z)*1.8+floor(world.y*2.7)*.5));c*=1.-.10*max(brick,joints);}if(tex.x>=0.)c*=texture2D(atlas,tex).rgb;if(world.y<.1&&tint.r<.26){float sheen=pow(1.-clamp((eye.y-world.y)/max(.1,distanceToEye),0.,1.),3.);float patches=.5+.5*sin(world.x*1.7+sin(world.z*2.3));c=mix(c,vec3(.53,.57,.58),sheen*(.08+patches*.16));}float pink=max(0.,1.-distance(world.xz,vec2(37.,-34.))/10.);float cyan=max(0.,1.-distance(world.xz,vec2(51.,-34.))/10.);float low=max(0.,1.-world.y/12.);c+=(vec3(.13,.02,.07)*pink+vec3(.01,.10,.12)*cyan)*low;float f=1.-exp(-pow(distanceToEye/fog,1.65));gl_FragColor=vec4(mix(c,vec3(.53,.57,.58),f),1.);}`;
+function shader(type, source) {
+const s = gl.createShader(type);
+gl.shaderSource(s, source);
+gl.compileShader(s);
+if (!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+throw Error(gl.getShaderInfoLog(s));
+return s;
+}
+const program = gl.createProgram();
+gl.attachShader(program, shader(gl.VERTEX_SHADER, vertex));
+gl.attachShader(program, shader(gl.FRAGMENT_SHADER, fragment));
+gl.linkProgram(program);
+if (!gl.getProgramParameter(program, gl.LINK_STATUS))
+throw Error(gl.getProgramInfoLog(program));
+gl.useProgram(program);
+const locations = {};
+for (const n of ["camera", "eye", "fog", "atlas"])
+locations[n] = gl.getUniformLocation(program, n);
+const buffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+function bindMesh(mesh) {
+gl.bindBuffer(gl.ARRAY_BUFFER, mesh);
+for (const [n, size, offset] of [
+["position", 3, 0],
+["color", 3, 12],
+["uv", 2, 24],
+]) {
+const a = gl.getAttribLocation(program, n);
+gl.enableVertexAttribArray(a);
+gl.vertexAttribPointer(a, size, gl.FLOAT, false, 32, offset);
+}
+}
+bindMesh(buffer);
+gl.enable(gl.DEPTH_TEST);
+gl.clearColor(0.53, 0.57, 0.58, 1);
+let vertices = [],
+staticMesh,
+staticCount = 0;
+function triangle(
+a,
+b,
+c,
+color,
+uvs = [
+[-1, -1],
+[-1, -1],
+[-1, -1],
+],
+) {
+for (const [i, p] of [a, b, c].entries())
+vertices.push(...p, ...color, ...uvs[i]);
+}
+function quad(a, b, c, d, color, uv) {
+triangle(a, b, c, color, uv ? [uv[0], uv[1], uv[2]] : undefined);
+triangle(a, c, d, color, uv ? [uv[0], uv[2], uv[3]] : undefined);
+}
+function box(x, y, z, w, h, d, c) {
+let X = x + w / 2,
+A = x - w / 2,
+Y = y + h,
+B = z - d / 2,
+Z = z + d / 2;
+quad([A, y, Z], [X, y, Z], [X, Y, Z], [A, Y, Z], c);
+quad(
+[X, y, B],
+[A, y, B],
+[A, Y, B],
+[X, Y, B],
+c.map((v) => v * 0.77),
+);
+quad(
+[A, y, B],
+[A, y, Z],
+[A, Y, Z],
+[A, Y, B],
+c.map((v) => v * 0.84),
+);
+quad(
+[X, y, Z],
+[X, y, B],
+[X, Y, B],
+[X, Y, Z],
+c.map((v) => v * 0.92),
+);
+quad(
+[A, Y, Z],
+[X, Y, Z],
+[X, Y, B],
+[A, Y, B],
+c.map((v) => v * 1.08),
+);
+}
+function line(a, b, r, c) {
+let dx = b[0] - a[0],
+dy = b[1] - a[1],
+dz = b[2] - a[2],
+len = Math.hypot(dx, dy, dz),
+u = Math.hypot(dx, dz) > 0.001 ? [-dz, 0, dx] : [1, 0, 0];
+let ul = Math.hypot(...u);
+u = u.map((v) => (v * r) / ul);
+let v = [
+dy * u[2] - dz * u[1],
+dz * u[0] - dx * u[2],
+dx * u[1] - dy * u[0],
+].map((k) => k / len);
+let pts = [u, v, u.map((k) => -k), v.map((k) => -k)];
+for (let i = 0; i < 4; i++) {
+let p = pts[i],
+q = pts[(i + 1) % 4];
+quad(
+a.map((k, j) => k + p[j]),
+b.map((k, j) => k + p[j]),
+b.map((k, j) => k + q[j]),
+a.map((k, j) => k + q[j]),
+c,
+);
+}
+}
+function multiply(a, b) {
+let r = new Float32Array(16);
+for (let c = 0; c < 4; c++)
+for (let row = 0; row < 4; row++)
+for (let k = 0; k < 4; k++)
+r[c * 4 + row] += a[k * 4 + row] * b[c * 4 + k];
+return r;
+}
+function cameraMatrix(p, yaw, pitch, aspect) {
+let f = [
+Math.sin(yaw) * Math.cos(pitch),
+Math.sin(pitch),
+-Math.cos(yaw) * Math.cos(pitch),
+],
+r = [Math.cos(yaw), 0, Math.sin(yaw)],
+u = [
+-Math.sin(yaw) * Math.sin(pitch),
+Math.cos(pitch),
+Math.cos(yaw) * Math.sin(pitch),
+];
+let v = new Float32Array([
+r[0],
+u[0],
+-f[0],
+0,
+r[1],
+u[1],
+-f[1],
+0,
+r[2],
+u[2],
+-f[2],
+0,
+-r.reduce((s, k, i) => s + k * p[i], 0),
+-u.reduce((s, k, i) => s + k * p[i], 0),
+f.reduce((s, k, i) => s + k * p[i], 0),
+1,
+]);
+let t = 1 / Math.tan(Math.PI / 6),
+n = 0.1,
+F = 450;
+return multiply(
+new Float32Array([
+t / aspect,
+0,
+0,
+0,
+0,
+t,
+0,
+0,
+0,
+0,
+(F + n) / (n - F),
+-1,
+0,
+0,
+(2 * F * n) / (n - F),
+0,
+]),
+v,
+);
+}
+const skyProgram = gl.createProgram();
+gl.attachShader(
+skyProgram,
+shader(
+gl.VERTEX_SHADER,
+"attribute vec2 point;varying vec2 screen;void main(){screen=point;gl_Position=vec4(point,0.,1.);}",
+),
+);
+gl.attachShader(
+skyProgram,
+shader(
+gl.FRAGMENT_SHADER,
+`precision mediump float;varying vec2 screen;uniform vec3 heading;uniform float aspect;float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);}void main(){vec3 f=vec3(sin(heading.x)*cos(heading.y),sin(heading.y),-cos(heading.x)*cos(heading.y));vec3 r=vec3(cos(heading.x),0.,sin(heading.x));vec3 u=vec3(-sin(heading.x)*sin(heading.y),cos(heading.y),cos(heading.x)*sin(heading.y));vec3 ray=normalize(f+r*screen.x*aspect*.577+u*screen.y*.577);vec2 p=ray.xz/max(.12,ray.y)*1.8+vec2(heading.z*.002,0.);float n=noise(p)*.6+noise(p*2.)*.28+noise(p*4.)*.12;float height=smoothstep(-.02,.5,ray.y);vec3 fog=vec3(.53,.57,.58);vec3 clouds=vec3(.62,.65,.65)+(n-.5)*.15;gl_FragColor=vec4(mix(fog,clouds,height),1.);}`,
+),
+);
+gl.linkProgram(skyProgram);
+const skyBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, skyBuffer);
+gl.bufferData(
+gl.ARRAY_BUFFER,
+new Float32Array([-1, -1, 3, -1, -1, 3]),
+gl.STATIC_DRAW,
+);
+function drawSky(yaw, pitch, time) {
+gl.disable(gl.DEPTH_TEST);
+gl.useProgram(skyProgram);
+gl.bindBuffer(gl.ARRAY_BUFFER, skyBuffer);
+const a = gl.getAttribLocation(skyProgram, "point");
+gl.enableVertexAttribArray(a);
+gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 8, 0);
+gl.uniform3f(gl.getUniformLocation(skyProgram, "heading"), yaw, pitch, time);
+gl.uniform1f(
+gl.getUniformLocation(skyProgram, "aspect"),
+canvas.width / canvas.height,
+);
+gl.drawArrays(gl.TRIANGLES, 0, 3);
+gl.useProgram(program);
+gl.enable(gl.DEPTH_TEST);
+bindMesh(buffer);
+}
+bindMesh(buffer);
+
+let seed = 1996;
+function random() {
+seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+return seed / 4294967296;
+}
+const palette = {
+brick: [0.43, 0.32, 0.29],
+teal: [0.27, 0.4, 0.39],
+concrete: [0.52, 0.51, 0.46],
+road: [0.19, 0.23, 0.24],
+metal: [0.26, 0.3, 0.29],
+};
+const signs = [
+"REWIND VIDEO",
+"STARLIGHT DINER",
+"INSERT COIN",
+"GROOVE MERCHANT",
+"STARLIGHT MOTEL",
+"FROSTY COLA",
+"98.5 FM THE WOLF",
+"LAST STOP GAS",
+"EAT",
+"VACANCY",
+"BE KIND · REWIND",
+"REGULAR 1.19",
+];
+const atlas = document.createElement("canvas");
+atlas.width = 1024;
+atlas.height = 1024;
+const ctx = atlas.getContext("2d");
+signs.forEach((s, i) => {
+let y = i * 80;
+ctx.fillStyle = ["#273d40", "#a6a28a", "#291d3a", "#483b37"][i % 4];
+ctx.fillRect(0, y, 1024, 80);
+ctx.strokeStyle = i === 2 ? "#e58fae" : "#b2ae94";
+ctx.lineWidth = 3;
+ctx.strokeRect(6, y + 6, 1012, 68);
+ctx.fillStyle = i === 2 ? "#99e4df" : i === 0 ? "#e0bc88" : "#e4ddbc";
+ctx.textAlign = "center";
+ctx.font = "bold " + (s.length > 18 ? 42 : 54) + "px monospace";
+ctx.fillText(s, 512, y + 58);
+});
+const texture = gl.createTexture();
+gl.bindTexture(gl.TEXTURE_2D, texture);
+gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, atlas);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+function sign(i, x, y, z, w, h) {
+let t = (i * 80) / 1024,
+b = (i * 80 + 80) / 1024;
+quad(
+[x - w / 2, y, z],
+[x + w / 2, y, z],
+[x + w / 2, y + h, z],
+[x - w / 2, y + h, z],
+[1, 1, 1],
+[
+[0, b],
+[1, b],
+[1, t],
+[0, t],
+],
+);
+}
+const colliders = [],
+swings = [];
+function building(x, z, w, d, h, c, shop = -1) {
+box(x, 0, z, w, h, d, c);
+colliders.push({ x, z, w: w / 2 + 0.55, d: d / 2 + 0.55, h });
+box(x, h, z, w + 0.4, 0.45, d + 0.4, palette.concrete);
+box(x + 2, h + 0.45, z, 3, 1.2, 2, palette.metal);
+for (let yy = 3; yy < h - 1; yy += 3.6) {
+for (let xx = x - w / 2 + 1.6; xx < x + w / 2 - 1; xx += 2.6) {
+let lit = random() > 0.42,
+col = lit ? [0.75, 0.73, 0.51] : [0.19, 0.27, 0.28];
+box(xx, yy, z + d / 2 + 0.025, 1.35, 1.9, 0.08, col);
+box(xx, yy, z - d / 2 - 0.025, 1.35, 1.9, 0.08, col);
+}
+for (let zz = z - d / 2 + 2; zz < z + d / 2 - 1; zz += 3) {
+box(
+x - w / 2 - 0.025,
+yy,
+zz,
+0.08,
+1.9,
+1.4,
+random() > 0.55 ? [0.67, 0.7, 0.55] : [0.22, 0.28, 0.28],
+);
+box(x + w / 2 + 0.025, yy, zz, 0.08, 1.9, 1.4, [0.3, 0.37, 0.36]);
+}
+}
+if (shop >= 0) {
+box(x, 0, z + d / 2 + 0.1, w - 1, 3, 0.2, [0.23, 0.32, 0.31]);
+for (let xx = x - w / 2 + 2; xx < x + w / 2; xx += 3)
+box(xx, 0.5, z + d / 2 + 0.23, 2.3, 2.2, 0.1, [0.67, 0.65, 0.44]);
+sign(shop, x, 3.6, z + d / 2 + 0.3, w - 1, 1.9);
+box(x, 3.2, z + d / 2 + 1.2, w, 0.25, 2.3, palette.teal);
+}
+}
+box(0, -0.25, 0, 245, 0.2, 245, [0.31, 0.35, 0.33]);
+for (let s of [-72, -24, 24, 72]) {
+box(s, -0.03, 0, 12, 0.04, 240, palette.road);
+box(0, -0.03, s, 240, 0.04, 12, palette.road);
+for (let k = -112; k < 116; k += 8) {
+box(s, 0.015, k, 0.15, 0.015, 3, [0.57, 0.53, 0.36]);
+box(k, 0.015, s, 3, 0.015, 0.15, [0.57, 0.53, 0.36]);
+}
+for (let side of [-1, 1]) {
+box(s + side * 7, 0.02, 0, 1.8, 0.16, 240, [0.48, 0.49, 0.46]);
+box(0, 0.02, s + side * 7, 240, 0.16, 1.8, [0.48, 0.49, 0.46]);
+}
+}
+for (let i = 0; i < 160; i++) {
+let x = random() * 230 - 115,
+z = random() * 230 - 115;
+box(
+x,
+0.025,
+z,
+1 + random() * 4,
+0.01,
+0.5 + random() * 2,
+[0.39, 0.44, 0.44],
+);
+}
+building(-9, -3, 23, 24, 15, palette.brick, 0);
+building(15, -3, 18, 24, 10, palette.teal, 1);
+building(44, -5, 19, 20, 17, palette.brick, 3);
+building(44, -48, 18, 22, 13, palette.concrete, 2);
+building(91, 44, 25, 28, 8, [0.5, 0.42, 0.35], 4);
+for (let x of [-96, -48, 0, 48, 96])
+for (let z of [-96, -48, 0, 48, 96]) {
+if (
+(z === 0 && x >= 0) ||
+(z === -48 && x === 48) ||
+(z === 48 && x >= 0) ||
+(z === 96 && x === 48)
+)
+continue;
+let h = 12 + random() * 27;
+building(x + random() * 3, z, 23 + random() * 5, 25 + random() * 6, h, [
+0.35 + random() * 0.15,
+0.34 + random() * 0.13,
+0.3 + random() * 0.13,
+]);
+}
+for (let x of [-14, -6])
+for (let z of [-7, 1])
+line(
+[x, 15, z],
+[-10 + (x + 10) * 0.8, 27, -3 + (z + 3) * 0.8],
+0.22,
+palette.metal,
+);
+for (let i = 0; i < 16; i++) {
+let a = (i * Math.PI) / 8,
+b = ((i + 1) * Math.PI) / 8;
+quad(
+[-10 + 4 * Math.cos(a), 25, -3 + 4 * Math.sin(a)],
+[-10 + 4 * Math.cos(b), 25, -3 + 4 * Math.sin(b)],
+[-10 + 4 * Math.cos(b), 31, -3 + 4 * Math.sin(b)],
+[-10 + 4 * Math.cos(a), 31, -3 + 4 * Math.sin(a)],
+[0.35, 0.35, 0.3],
+);
+triangle(
+[-10, 33, -3],
+[-10 + 4.5 * Math.cos(a), 31, -3 + 4.5 * Math.sin(a)],
+[-10 + 4.5 * Math.cos(b), 31, -3 + 4.5 * Math.sin(b)],
+[0.28, 0.32, 0.3],
+);
+}
+for (let z = -108; z <= 108; z += 24) {
+box(-17, 0, z, 0.28, 10, 0.28, [0.28, 0.24, 0.19]);
+box(-17, 8.8, z, 3, 0.16, 0.2, palette.metal);
+for (let offset of [-1, 1])
+for (let j = 0; j < 12; j++) {
+let t = j / 12,
+v = (j + 1) / 12;
+line(
+[-17 + offset, 9 - 1.3 * 4 * t * (1 - t), z + t * 24],
+[-17 + offset, 9 - 1.3 * 4 * v * (1 - v), z + v * 24],
+0.025,
+[0.17, 0.22, 0.22],
+);
+}
+}
+for (let x of [-79, -17, 31, 79])
+for (let z of [-78, -30, 18, 66]) {
+line([x, 0, z], [x, 7, z], 0.12, palette.metal);
+line([x, 7, z], [x + 2, 7, z], 0.1, palette.metal);
+box(x + 2, 6.8, z, 1, 0.16, 0.6, [0.91, 0.85, 0.57]);
+if (x === -17) {
+box(x + 3, 4.8, z, 0.55, 1.7, 0.5, [0.2, 0.24, 0.22]);
+box(x + 3, 5.9, z + 0.27, 0.25, 0.28, 0.03, [0.72, 0.25, 0.18]);
+}
+}
+building(33, -33, 7, 8, 9, palette.brick);
+building(55, -33, 7, 8, 11, palette.teal);
+for (let x of [33.7, 54.3]) {
+line([x, 0.3, -34], [x, 6, -34], 0.08, [0.46, 0.76, 0.73]);
+line([x, 6, -34], [x, 6, -59], 0.08, [0.65, 0.29, 0.47]);
+}
+
+box(44, 0.03, -33, 8, 0.01, 8, [0.36, 0.33, 0.4]);
+box(0, 4, 48, 25, 0.6, 16, [0.49, 0.51, 0.43]);
+for (let x of [-10, 10]) box(x, 0, 48, 0.3, 4, 0.3, palette.metal);
+for (let x of [-5, 5]) {
+box(x, 0, 48, 1.4, 2.5, 1, [0.57, 0.35, 0.29]);
+box(x, 1.5, 48 + 0.51, 1, 0.6, 0.05, [0.2, 0.26, 0.25]);
+}
+sign(7, 0, 4.7, 56.1, 24, 2);
+sign(11, 0, 2, 49, 6, 1);
+for (let [i, x, z] of [
+[5, -49, 13],
+[6, 0, -85],
+]) {
+box(x, 0, z, 0.4, 13, 0.4, palette.metal);
+box(x, 11, z, 19, 5, 0.5, palette.metal);
+sign(i, x, 11.3, z + 0.3, 18.5, 4.4);
+}
+box(91, 0.03, 64, 24, 0.25, 15, [0.65, 0.65, 0.56]);
+box(91, 0.3, 64, 20, 0.12, 11, [0.28, 0.4, 0.39]);
+box(91, 0.42, 64, 17, 0.02, 8, [0.4, 0.5, 0.47]);
+for (let x of [81, 101]) box(x, 0.3, 64, 0.4, 1.2, 11, [0.62, 0.66, 0.59]);
+for (let z of [58.5, 69.5]) box(91, 0.3, z, 20, 1.2, 0.4, [0.62, 0.66, 0.59]);
+for (let x of [88, 89]) {
+line([x, 0.4, 69], [x, 2, 69], 0.07, palette.metal);
+line([x, 2, 69], [x, 2, 70.5], 0.07, palette.metal);
+}
+sign(4, 92, 8, 59, 23, 2.5);
+sign(9, 92, 6.7, 59.1, 8, 1);
+box(92, 0, 58.5, 0.4, 9, 0.4, palette.metal);
+box(44, 0.03, 94, 34, 0.03, 31, [0.24, 0.28, 0.28]);
+for (let x = 30; x < 60; x += 4)
+for (let z of [85, 102]) box(x, 0.07, z, 0.12, 0.02, 7, [0.64, 0.62, 0.49]);
+box(45, 5, 112, 30, 15, 0.5, [0.65, 0.67, 0.61]);
+for (let x of [33, 57]) box(x, 0, 112, 0.5, 5, 0.5, palette.metal);
+box(44, 0.04, 47, 31, 0.04, 30, [0.36, 0.39, 0.36]);
+for (let x = 29; x <= 59; x += 5)
+line([x, 0, 62], [x, 3, 62], 0.06, palette.metal);
+for (let x = 29; x < 59; x += 0.6)
+for (let y = 0.3; y < 3; y += 0.6) {
+line([x, y, 62], [x + 0.6, y + 0.6, 62], 0.012, [0.48, 0.52, 0.49]);
+if (y > 0.5)
+line([x, y, 62], [x + 0.6, y - 0.6, 62], 0.012, [0.48, 0.52, 0.49]);
+}
+for (let x of [35, 45]) {
+line([x - 1, 0, 39], [x, 4, 41], 0.09, palette.metal);
+line([x + 1, 0, 43], [x, 4, 41], 0.09, palette.metal);
+}
+line([35, 4, 41], [45, 4, 41], 0.12, palette.metal);
+swings.push(38, 42);
+line([55, 0, 50], [55, 4.8, 50], 0.1, palette.metal);
+box(55, 3.8, 50, 3, 1.8, 0.15, [0.68, 0.68, 0.59]);
+for (let i = 0; i < 16; i++) {
+let a = (i * Math.PI) / 8,
+b = ((i + 1) * Math.PI) / 8;
+line(
+[55 + 0.55 * Math.cos(a), 3.8, 51 + 0.55 * Math.sin(a)],
+[55 + 0.55 * Math.cos(b), 3.8, 51 + 0.55 * Math.sin(b)],
+0.035,
+[0.6, 0.34, 0.23],
+);
+}
+sign(8, 22, 6, 9.5, 2, 2.5);
+sign(10, -9, 1.1, 9.45, 6, 0.7);
+for (let x = 7; x < 24; x += 1.5)
+box(x, 3.48, 10.7, 0.7, 0.03, 2, [0.57, 0.36, 0.29]);
+for (let x = 38; x < 51; x += 2) {
+box(x, 1.4, 5.5, 0.9, 0.9, 0.04, [0.51, 0.43, 0.32]);
+box(x, 1.6, 5.55, 0.5, 0.5, 0.02, [0.25, 0.3, 0.28]);
+}
+for (let z = -100; z < 110; z += 16) {
+box(-18, 0.12, z, 0.7, 0.04, 0.9, [0.21, 0.25, 0.25]);
+for (let k = 0; k < 5; k++)
+box(-18.25 + k * 0.12, 0.15, z, 0.04, 0.015, 0.8, [0.38, 0.41, 0.39]);
+}
+function car(x, z, c, turn = false) {
+if (turn) {
+box(x, 0.45, z, 4.7, 0.85, 2, c);
+box(x, 0.95, z, 2.5 + (x % 3 > 1 ? 0.6 : 0), 0.9, 1.8, [0.28, 0.36, 0.36]);
+for (let side of [-1, 1]) {
+box(x + side * 1.6, 0.2, z, 0.8, 0.65, 2.15, [0.12, 0.15, 0.15]);
+box(x + 2.38, 0.75, z + side * 0.65, 0.04, 0.3, 0.5, [0.89, 0.85, 0.6]);
+}
+} else {
+box(x, 0.45, z, 2, 0.85, 4.7, c);
+box(
+x,
+0.95,
+z,
+1.8,
+0.9,
+2.5 + (Math.abs(z) % 3 > 1 ? 0.6 : 0),
+[0.28, 0.36, 0.36],
+);
+for (let side of [-1, 1]) {
+box(x, 0.2, z + side * 1.6, 2.15, 0.65, 0.8, [0.12, 0.15, 0.15]);
+box(x + side * 0.65, 0.75, z - 2.38, 0.5, 0.3, 0.04, [0.89, 0.85, 0.6]);
+}
+}
+}
+for (let i = 0; i < 20; i++)
+car(-19, -100 + i * 10, [
+0.31 + random() * 0.2,
+0.32 + random() * 0.1,
+0.28 + random() * 0.1,
+]);
+
+const cells = new Map();
+for (let i = 0; i < vertices.length; i += 24) {
+let x = (vertices[i] + vertices[i + 8] + vertices[i + 16]) / 3,
+z = (vertices[i + 2] + vertices[i + 10] + vertices[i + 18]) / 3,
+wide =
+Math.max(vertices[i], vertices[i + 8], vertices[i + 16]) -
+Math.min(vertices[i], vertices[i + 8], vertices[i + 16]) >
+32 ||
+Math.max(vertices[i + 2], vertices[i + 10], vertices[i + 18]) -
+Math.min(vertices[i + 2], vertices[i + 10], vertices[i + 18]) >
+32,
+key = wide ? "global" : `${Math.floor(x / 24)},${Math.floor(z / 24)}`;
+if (!cells.has(key))
+cells.set(key, {
+x: Math.floor(x / 24) * 24 + 12,
+z: Math.floor(z / 24) * 24 + 12,
+data: [],
+global: wide,
+});
+let data = cells.get(key).data;
+for (let j = 0; j < 24; j++) data.push(vertices[i + j]);
+}
+vertices = [];
+const batches = [];
+for (const cell of cells.values()) {
+batches.push({
+x: cell.x,
+z: cell.z,
+global: cell.global,
+start: vertices.length / 8,
+count: cell.data.length / 8,
+});
+for (const v of cell.data) vertices.push(v);
+}
+cells.clear();
+staticMesh = new Float32Array(vertices);
+staticCount = vertices.length / 8;
+vertices = [];
+gl.bufferData(gl.ARRAY_BUFFER, staticMesh, gl.STATIC_DRAW);
+staticMesh = null;
+const movingBuffer = gl.createBuffer();
+const viewpoints = [
+{ name: "Main Street", p: [-3, 3.2, 32], target: [-7, 12, -3] },
+{ name: "Rooftop", p: [-43, 40, 9], target: [-10, 24, -3] },
+{ name: "Arcade Alley", p: [44, 2.8, -17], target: [44, 4.5, -39] },
+{ name: "The Video Store", p: [-8, 2.5, 18], target: [-9, 4, 9] },
+{ name: "Schoolyard / Parking Lot", p: [66, 20, 109], target: [44, 1, 68] },
+{ name: "Motel Pool", p: [91, 5, 79], target: [91, 0, 64] },
+];
+
+let audio,
+master,
+muted = false,
+audioTimer;
+function tone(freq, duration, volume, type = "sine", bend = 0) {
+if (!audio || muted) return;
+const o = audio.createOscillator(),
+g = audio.createGain();
+o.type = type;
+o.frequency.setValueAtTime(freq, audio.currentTime);
+o.frequency.linearRampToValueAtTime(
+Math.max(20, freq + bend),
+audio.currentTime + duration,
+);
+g.gain.setValueAtTime(0, audio.currentTime);
+g.gain.linearRampToValueAtTime(volume, audio.currentTime + 0.08);
+g.gain.exponentialRampToValueAtTime(0.00001, audio.currentTime + duration);
+o.connect(g).connect(master);
+o.start();
+o.stop(audio.currentTime + duration);
+}
+function startAudio() {
+if (audio) {
+audio.resume();
+return;
+}
+const Audio = window.AudioContext || window.webkitAudioContext;
+if (!Audio) return;
+audio = new Audio();
+master = audio.createGain();
+master.gain.value = 0.48;
+master.connect(audio.destination);
+const b = audio.createBuffer(1, audio.sampleRate * 4, audio.sampleRate),
+data = b.getChannelData(0);
+let last = 0;
+for (let i = 0; i < data.length; i++) {
+last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02;
+data[i] = last * 4;
+}
+const noise = audio.createBufferSource(),
+filter = audio.createBiquadFilter(),
+gain = audio.createGain();
+noise.buffer = b;
+noise.loop = true;
+filter.type = "lowpass";
+filter.frequency.value = 550;
+gain.gain.value = 0.11;
+noise.connect(filter).connect(gain).connect(master);
+noise.start();
+const hum = audio.createOscillator(),
+hg = audio.createGain();
+hum.frequency.value = 53;
+hg.gain.value = 0.018;
+hum.connect(hg).connect(master);
+hum.start();
+let event = 0;
+audioTimer = setInterval(() => {
+if (document.hidden || muted) return;
+event++;
+tone(1100 + Math.random() * 1300, 0.25, 0.012, "sine", -400);
+if (event % 7 === 0) {
+tone(330, 5, 0.013, "sine", 180);
+tone(334, 5, 0.007, "sine", 180);
+}
+if (event % 11 === 0) {
+tone(440, 3, 0.026);
+tone(880, 2, 0.009);
+}
+if (event % 13 === 0) {
+tone(155, 4, 0.022);
+tone(196, 4, 0.012);
+}
+if (event % 5 === 0) {
+tone(740, 0.45, 0.017, "triangle", -390);
+setTimeout(() => tone(680, 0.4, 0.012, "triangle", -300), 500);
+}
+}, 2800);
+}
+function toggleSound() {
+muted = !muted;
+if (master)
+master.gain.setTargetAtTime(muted ? 0 : 0.48, audio.currentTime, 0.15);
+document.querySelector("#sound").textContent = muted
+? "Sound off"
+: "Sound on";
+}
+
+addEventListener("visibilitychange", () => {
+if (!audio) return;
+if (document.hidden) audio.suspend();
+else audio.resume();
+});
+
+const $ = (s) => document.querySelector(s),
+keys = new Set(),
+touches = new Map();
+let position = [0, 3, 30],
+yaw = 0,
+pitch = 0,
+entered = false,
+paused = false,
+lastTime = 0,
+frames = 0,
+frameSeconds = 0,
+slowSeconds = 0,
+fps = 60,
+level = 1,
+manualUntil = 0,
+touchStart = 0,
+viewIndex = 0;
+const quality = [
+{ ratio: 1, fog: 82, rain: 45 },
+{ ratio: 1.35, fog: 115, rain: 100 },
+{ ratio: 1.75, fog: 150, rain: 180 },
+];
+try {
+const saved = localStorage.getItem("rewind-detail");
+level =
+saved === null
+? (navigator.hardwareConcurrency || 4) <= 4 ||
+matchMedia("(pointer:coarse)").matches
+? 0
+: 1
+: Math.max(0, Math.min(2, Number(saved) || 0));
+} catch {}
+function setDetail(value, manual = false) {
+level = value;
+$("#detail").selectedIndex = level;
+if (manual) {
+manualUntil = performance.now() + 30000;
+slowSeconds = 0;
+}
+try {
+localStorage.setItem("rewind-detail", String(level));
+} catch {}
+resize();
+}
+function resize() {
+let ratio = Math.min(devicePixelRatio || 1, quality[level].ratio);
+canvas.width = Math.round(innerWidth * ratio);
+canvas.height = Math.round(innerHeight * ratio);
+gl.viewport(0, 0, canvas.width, canvas.height);
+}
+addEventListener("resize", resize);
+setDetail(level);
+function viewpoint(i) {
+viewIndex = i;
+const v = viewpoints[i];
+position = [...v.p];
+const d = v.target.map((x, j) => x - position[j]);
+yaw = Math.atan2(d[0], -d[2]);
+pitch = Math.atan2(d[1], Math.hypot(d[0], d[2]));
+$("#place").textContent = v.name;
+[...$("#views").children].forEach((b, j) =>
+b.classList.toggle("active", j === i),
+);
+}
+viewpoints.forEach((v, i) => {
+const b = document.createElement("button");
+b.textContent = `${i + 1}  ${v.name}`;
+b.onclick = () => {
+viewpoint(i);
+};
+$("#views").append(b);
+});
+viewpoint(0);
+function lock() {
+if (!matchMedia("(pointer:coarse)").matches) {
+try {
+const result = canvas.requestPointerLock?.();
+if (result?.catch) result.catch(() => {});
+} catch {}
+}
+}
+function showMenu(value) {
+paused = value;
+$("#menu").hidden = !value;
+keys.clear();
+touches.clear();
+if (value && document.pointerLockElement) document.exitPointerLock();
+else if (!value) lock();
+}
+$("#enter").onclick = () => {
+entered = true;
+$("#overlay").hidden = true;
+startAudio();
+lock();
+};
+$("#menuButton").onclick = () => {
+if (entered) showMenu(!paused);
+};
+$("#resume").onclick = () => showMenu(false);
+$("#home").onclick = (e) => {
+e.preventDefault();
+if (entered) showMenu(true);
+};
+$("#sound").onclick = toggleSound;
+$("#detail").onchange = (e) => setDetail(e.target.selectedIndex, true);
+addEventListener("pointerlockchange", () => {
+if (
+entered &&
+!document.pointerLockElement &&
+!matchMedia("(pointer:coarse)").matches
+)
+showMenu(true);
+});
+addEventListener("keydown", (e) => {
+if (/^(INPUT|SELECT)$/.test(e.target.tagName)) return;
+const k = e.key.toLowerCase();
+if (["w", "a", "s", "d", "q", "e", " ", "arrowup", "arrowdown"].includes(k))
+e.preventDefault();
+if (!entered) return;
+if (e.repeat) {
+keys.add(k);
+return;
+}
+if (k === "escape") {
+showMenu(!paused);
+return;
+}
+if (k === "m") toggleSound();
+if (k === "h") $("#stats").hidden = !$("#stats").hidden;
+if (k >= "1" && k <= "6") viewpoint(Number(k) - 1);
+keys.add(k);
+});
+addEventListener("keyup", (e) => keys.delete(e.key.toLowerCase()));
+addEventListener("blur", () => {
+keys.clear();
+touches.clear();
+if (entered) showMenu(true);
+});
+function look(dx, dy) {
+yaw += dx * 0.0025;
+pitch = Math.max(-1.45, Math.min(1.45, pitch - dy * 0.0025));
+}
+addEventListener("mousemove", (e) => {
+if (entered && !paused && document.pointerLockElement === canvas)
+look(e.movementX, e.movementY);
+});
+canvas.addEventListener("pointerdown", (e) => {
+if (!entered || paused) return;
+if (e.pointerType === "touch") {
+canvas.setPointerCapture(e.pointerId);
+touches.set(e.pointerId, [e.clientX, e.clientY]);
+touchStart = performance.now();
+} else lock();
+});
+canvas.addEventListener("pointermove", (e) => {
+if (touches.has(e.pointerId)) {
+const p = touches.get(e.pointerId);
+look(e.clientX - p[0], e.clientY - p[1]);
+touches.set(e.pointerId, [e.clientX, e.clientY]);
+}
+});
+for (const event of ["pointerup", "pointercancel", "lostpointercapture"])
+canvas.addEventListener(event, (e) => touches.delete(e.pointerId));
+function collides(p) {
+return colliders.some(
+(b) =>
+p[1] < b.h + 0.5 &&
+Math.abs(p[0] - b.x) < b.w &&
+Math.abs(p[2] - b.z) < b.d,
+);
+}
+function move(dt) {
+let forward =
+(keys.has("w") ? 1 : 0) -
+(keys.has("s") ? 1 : 0) +
+(touches.size && performance.now() - touchStart > 240 ? 1 : 0),
+side = (keys.has("d") ? 1 : 0) - (keys.has("a") ? 1 : 0),
+vertical = (keys.has("e") ? 1 : 0) - (keys.has("q") ? 1 : 0);
+let speed = (keys.has("shift") || touches.size > 1 ? 16 : 6) * dt,
+normal = Math.max(1, Math.hypot(forward, side, vertical));
+let delta = [
+((Math.sin(yaw) * Math.cos(pitch) * forward + Math.cos(yaw) * side) *
+speed) /
+normal,
+((Math.sin(pitch) * forward + vertical) * speed) / normal,
+((-Math.cos(yaw) * Math.cos(pitch) * forward + Math.sin(yaw) * side) *
+speed) /
+normal,
+];
+for (let axis of [0, 2, 1]) {
+let p = [...position];
+p[axis] += delta[axis];
+p[0] = Math.max(-116, Math.min(116, p[0]));
+p[2] = Math.max(-116, Math.min(116, p[2]));
+p[1] = Math.max(1.1, Math.min(60, p[1]));
+if (!collides(p)) position = p;
+}
+}
+function animated(t) {
+vertices = [];
+for (let i = 0; i < 4; i++) {
+let u = (t * 2.4 + i * 47) % 192,
+x,
+z,
+turn;
+if (u < 48) {
+x = -24 + u;
+z = 21;
+turn = true;
+} else if (u < 96) {
+x = 27;
+z = 21 - (u - 48);
+turn = false;
+} else if (u < 144) {
+x = 24 - (u - 96);
+z = -27;
+turn = true;
+} else {
+x = -27;
+z = -24 + (u - 144);
+turn = false;
+}
+car(x, z, [0.35 + i * 0.025, 0.36, 0.32], turn);
+}
+for (let x of swings) {
+let z = 41 + Math.sin(t * 0.7 + x) * 0.25;
+for (let xx of [x - 0.6, x + 0.6])
+line([xx, 4, 41], [xx, 1.2, z], 0.025, [0.3, 0.33, 0.3]);
+box(x, 1.1, z, 1.5, 0.12, 0.65, [0.23, 0.27, 0.25]);
+}
+let plane = t % 100;
+if (plane < 42) {
+let x = -150 + plane * 7;
+box(x, 65, -85, 5, 0.5, 0.7, [0.42, 0.46, 0.46]);
+box(x, 65, -85, 0.8, 0.15, 8, [0.42, 0.46, 0.46]);
+}
+for (let i = 0; i < 5; i++) {
+let x = ((t * 3 + i * 11) % 230) - 115,
+y = 26 + Math.sin(t * 0.7 + i) * 2,
+z = -15 + i * 4;
+let flap = Math.sin(t * 5 + i) * 0.65;
+line([x - 1, y + flap, z + 0.3], [x, y, z], 0.045, [0.2, 0.25, 0.25]);
+line([x, y, z], [x + 1, y + flap, z + 0.3], 0.045, [0.2, 0.25, 0.25]);
+}
+for (let i = 0; i < quality[level].rain; i++) {
+let x =
+position[0] + Math.sin(i * 71.3) * 26 + Math.sin(t * 0.15 + i) * 0.2,
+z = position[2] + Math.cos(i * 53.7) * 26,
+y = (((i * 1.71 - t * 0.8) % 18) + 18) % 18;
+line([x, y, z], [x + 0.015, y + 0.17, z], 0.009, [0.6, 0.64, 0.63]);
+}
+return new Float32Array(vertices);
+}
+function render(now) {
+const elapsed = lastTime ? (now - lastTime) / 1000 : 0.016;
+const dt = Math.min(elapsed, 0.1);
+lastTime = now;
+if (entered && !paused) move(dt);
+const dynamic = animated(now * 0.001);
+gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+drawSky(yaw, pitch, now * 0.001);
+gl.uniformMatrix4fv(
+locations.camera,
+false,
+cameraMatrix(position, yaw, pitch, canvas.width / canvas.height),
+);
+gl.uniform3fv(locations.eye, position);
+gl.uniform1f(locations.fog, quality[level].fog);
+bindMesh(buffer);
+let drawn = 0;
+for (const b of batches) {
+if (
+b.global ||
+Math.hypot(b.x - position[0], b.z - position[2]) <
+quality[level].fog * 1.6 + 20
+) {
+gl.drawArrays(gl.TRIANGLES, b.start, b.count);
+drawn += b.count;
+}
+}
+bindMesh(movingBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, dynamic, gl.DYNAMIC_DRAW);
+gl.drawArrays(gl.TRIANGLES, 0, dynamic.length / 8);
+drawn += dynamic.length / 8;
+frames++;
+frameSeconds += elapsed;
+if (frameSeconds >= 2) {
+fps = Math.round(frames / frameSeconds);
+$("#stats").textContent =
+`${fps} fps · ${["Low", "Medium", "High"][level]} · ${Math.round(drawn / 3).toLocaleString()} triangles`;
+if (!document.hidden && entered && !paused && fps < 28 && now > manualUntil)
+slowSeconds += frameSeconds;
+else slowSeconds = 0;
+if (slowSeconds >= 6 && level > 0) {
+setDetail(level - 1);
+slowSeconds = 0;
+}
+frames = 0;
+frameSeconds = 0;
+}
+requestAnimationFrame(render);
+}
+addEventListener("visibilitychange", () => {
+lastTime = 0;
+frames = 0;
+frameSeconds = 0;
+slowSeconds = 0;
+});
+$("#loading").textContent = "Your afternoon is ready.";
+$("#enter").disabled = false;
+requestAnimationFrame(render);
+window.rewind = {
+get state() {
+return {
+position: [...position],
+yaw,
+pitch,
+level,
+fps,
+staticCount,
+entered,
+paused,
+viewIndex,
+};
+},
+};
+
+    </script>
+  </body>
+</html>
